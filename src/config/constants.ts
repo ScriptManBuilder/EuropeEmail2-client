@@ -1,16 +1,16 @@
 // Contact Information Constants
 export const CONTACT_INFO = {
-  email: process.env.REACT_APP_SUPPORT_EMAIL || 'support@photoshop-ecourses.com',
-  phone: process.env.REACT_APP_SUPPORT_PHONE || '+14632639480',
-  phoneFormatted: process.env.REACT_APP_SUPPORT_PHONE_FORMATTED || '+1 (463) 263-9480',
+  email: process.env.REACT_APP_SUPPORT_EMAIL || 'support@email-learn.com',
+  phone: process.env.REACT_APP_SUPPORT_PHONE || '+12295302424',
+  phoneFormatted: process.env.REACT_APP_SUPPORT_PHONE_FORMATTED || '+1 (229) 530-2424',
 } as const;
 
 // Company Information Constants
 export const COMPANY_INFO = {
-  name: process.env.REACT_APP_COMPANY_NAME || 'Goldleaf Goods LLC',
-  websiteUrl: process.env.REACT_APP_WEBSITE_URL || 'photoshop-ecourses.com',
+  name: process.env.REACT_APP_COMPANY_NAME || 'Elariosso Digital',
+  websiteUrl: process.env.REACT_APP_WEBSITE_URL || 'email-learn.com',
   address: process.env.REACT_APP_COMPANY_ADDRESS || '1350 Tumbleweed Way, Sacramento, CA, USA, 95834',
-  owner: process.env.REACT_APP_COMPANY_OWNER || 'Renita Godbold',
+  owner: process.env.REACT_APP_COMPANY_OWNER ,
 } as const;
 
 // API Configuration
@@ -20,7 +20,7 @@ export const API_CONFIG = {
 
 // App Configuration
 export const APP_CONFIG = {
-  name: process.env.REACT_APP_APP_NAME || 'CopywritingEcourses',
+  name: process.env.REACT_APP_APP_NAME ,
   version: process.env.REACT_APP_VERSION || '1.0.0',
 } as const;
 
