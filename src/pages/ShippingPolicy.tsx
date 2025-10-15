@@ -188,8 +188,8 @@ const ShippingPolicy: React.FC = () => {
           For service delivery issues or technical support:
         </Paragraph>
         <Paragraph>
-          <strong>{COMPANY_INFO.name}</strong><br/>
-          Director: {COMPANY_INFO.owner}<br/>
+        
+          Company name: {COMPANY_INFO.owner}<br/>
           Email: {CONTACT_INFO.email}<br/>
           Phone: {CONTACT_INFO.phoneFormatted}<br/>
           Address: {COMPANY_INFO.address}<br/>

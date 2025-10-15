@@ -167,7 +167,7 @@ const ReturnPolicy: React.FC = () => {
         </Paragraph>
         <Paragraph>
       
-          Director: {COMPANY_INFO.owner}<br/>
+          Company name: {COMPANY_INFO.owner}<br/>
           Email: {CONTACT_INFO.email}<br/>
           Phone: {CONTACT_INFO.phoneFormatted}<br/>
           Address: {COMPANY_INFO.address}<br/>

@@ -56,11 +56,11 @@ const TermsConditions: React.FC = () => {
       <Section>
         <SectionTitle>2. Company Information</SectionTitle>
         <Paragraph>
-          This email management platform is operated by {COMPANY_INFO.name}. 
+          This email management platform is operated by Elariosso Digital. 
           Our contact information:
         </Paragraph>
         <Paragraph>
-          Director: {COMPANY_INFO.owner}<br/>
+         
           Email: {CONTACT_INFO.email}<br/>
           Phone: {CONTACT_INFO.phoneFormatted}<br/>
           Address: {COMPANY_INFO.address}
@@ -175,7 +175,7 @@ const TermsConditions: React.FC = () => {
         </Paragraph>
         <Paragraph>
        
-          Director: {COMPANY_INFO.owner}<br />
+          Company name: {COMPANY_INFO.owner}<br />
           Address: {COMPANY_INFO.address}<br />
           Phone: {CONTACT_INFO.phoneFormatted}<br />
           Email: {CONTACT_INFO.email}<br />
