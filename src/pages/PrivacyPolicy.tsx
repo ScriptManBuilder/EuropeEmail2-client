@@ -257,9 +257,8 @@ const PrivacyPolicy: React.FC = () => {
           If you have any questions about this Privacy Policy or wish to exercise your rights, please contact us at:
         </Paragraph>
         <Paragraph>
-          {/* <strong>{COMPANY_INFO.name}</strong><br/> */}
-          Director: Georgi Nikolov Kostov<br/>
-          Company name: {COMPANY_INFO.owner}<br/>
+          <strong>{COMPANY_INFO.name}</strong><br/>
+          {COMPANY_INFO.owner}<br/>
           {COMPANY_INFO.address}<br/>
           Email: {CONTACT_INFO.email}<br/>
           Phone: {CONTACT_INFO.phoneFormatted}

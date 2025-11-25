@@ -165,11 +165,11 @@ const RefundPolicy: React.FC = () => {
           For refund requests or questions about this policy, please contact us:
         </Paragraph>
         <Paragraph>
-   
-          Company name: {COMPANY_INFO.owner}<br/>
+          <strong>{COMPANY_INFO.name}</strong><br/>
+          {COMPANY_INFO.owner}<br/>
+          {COMPANY_INFO.address}<br/>
           Email: {CONTACT_INFO.email}<br/>
           Phone: {CONTACT_INFO.phoneFormatted}<br/>
-          Address: {COMPANY_INFO.address}<br/>
           Support Hours: Monday-Friday, 9 AM - 6 PM GMT
         </Paragraph>
         <Paragraph>

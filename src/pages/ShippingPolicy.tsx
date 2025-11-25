@@ -188,11 +188,11 @@ const ShippingPolicy: React.FC = () => {
           For service delivery issues or technical support:
         </Paragraph>
         <Paragraph>
-        
-          Company name: {COMPANY_INFO.owner}<br/>
+          <strong>{COMPANY_INFO.name}</strong><br/>
+          {COMPANY_INFO.owner}<br/>
+          {COMPANY_INFO.address}<br/>
           Email: {CONTACT_INFO.email}<br/>
           Phone: {CONTACT_INFO.phoneFormatted}<br/>
-          Address: {COMPANY_INFO.address}<br/>
           Support Hours: Monday-Friday, 9 AM - 5 PM GMT
         </Paragraph>
         <Paragraph>

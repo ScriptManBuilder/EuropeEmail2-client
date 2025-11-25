@@ -174,11 +174,11 @@ const TermsConditions: React.FC = () => {
           For questions about these Terms & Conditions or service-related inquiries, please contact us at:
         </Paragraph>
         <Paragraph>
-       
-          Company name: {COMPANY_INFO.owner}<br />
-          Address: {COMPANY_INFO.address}<br />
-          Phone: {CONTACT_INFO.phoneFormatted}<br />
-          Email: {CONTACT_INFO.email}<br />
+          <strong>{COMPANY_INFO.name}</strong><br/>
+          {COMPANY_INFO.owner}<br/>
+          {COMPANY_INFO.address}<br/>
+          Phone: {CONTACT_INFO.phoneFormatted}<br/>
+          Email: {CONTACT_INFO.email}<br/>
           Support Hours: Monday-Friday, 9 AM - 6 PM GMT
         </Paragraph>
       </Section>

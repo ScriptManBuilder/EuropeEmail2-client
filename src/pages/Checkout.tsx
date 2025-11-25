@@ -1245,6 +1245,69 @@ const TermsText = styled.span`
   }
 `;
 
+const PaymentMethodSelector = styled.div`
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+
+  @media (max-width: 768px) {
+    gap: 12px;
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 10px;
+  }
+`;
+
+const PaymentMethodOption = styled.button<{ $selected: boolean }>`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  background: ${props => props.$selected ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(99, 102, 241, 0.08) 100%)' : 'var(--minimal-white)'};
+  border: 2px solid ${props => props.$selected ? '#3b82f6' : 'var(--minimal-gray-200)'};
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--minimal-text-primary);
+  box-shadow: ${props => props.$selected ? '0 4px 12px rgba(59, 130, 246, 0.15)' : '0 2px 4px rgba(0, 0, 0, 0.05)'};
+
+  &:hover {
+    border-color: #3b82f6;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    padding: 14px;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+`;
+
+const PaymentMethodLogo = styled.img`
+  height: 24px;
+  width: auto;
+  object-fit: contain;
+
+  @media (max-width: 480px) {
+    height: 20px;
+  }
+`;
+
 const Checkout: React.FC = () => {
   const { state } = useCart();
   const { subscription, isMember, isOnTrial } = useMembership();
@@ -1278,6 +1341,7 @@ const Checkout: React.FC = () => {
     };
   };
 
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'sepa'>('card');
   const [captchaProblem, setCaptchaProblem] = useState(generateCaptcha());
   const [formData, setFormData] = useState({
     email: '',
@@ -1291,7 +1355,9 @@ const Checkout: React.FC = () => {
     cardNumber: '',
     expiryDate: '',
     cvv: '',
-    nameOnCard: ''
+    nameOnCard: '',
+    iban: '',
+    accountHolderName: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaAnswer, setCaptchaAnswer] = useState<string>('');
@@ -1329,7 +1395,10 @@ const Checkout: React.FC = () => {
   };
 
   const validateForm = () => {
-    const required = ['email', 'firstName', 'lastName', 'country', 'cardNumber', 'expiryDate', 'cvv', 'nameOnCard'];
+    const baseRequired = ['email', 'firstName', 'lastName', 'country'];
+    const cardRequired = paymentMethod === 'card' ? ['cardNumber', 'expiryDate', 'cvv', 'nameOnCard'] : [];
+    const sepaRequired = paymentMethod === 'sepa' ? ['iban', 'accountHolderName'] : [];
+    const required = [...baseRequired, ...cardRequired, ...sepaRequired];
     
     for (const field of required) {
       if (!formData[field as keyof typeof formData]) {
@@ -1357,11 +1426,21 @@ const Checkout: React.FC = () => {
       return false;
     }
     
-    // Basic card number validation (remove spaces and check length)
-    const cardNumber = formData.cardNumber.replace(/\s/g, '');
-    if (cardNumber.length < 13 || cardNumber.length > 19) {
-      setPaymentError('Please enter a valid card number');
-      return false;
+    // Validate based on payment method
+    if (paymentMethod === 'card') {
+      // Basic card number validation (remove spaces and check length)
+      const cardNumber = formData.cardNumber.replace(/\s/g, '');
+      if (cardNumber.length < 13 || cardNumber.length > 19) {
+        setPaymentError('Please enter a valid card number');
+        return false;
+      }
+    } else if (paymentMethod === 'sepa') {
+      // Basic IBAN validation (remove spaces and check length)
+      const iban = formData.iban.replace(/\s/g, '');
+      if (iban.length < 15 || iban.length > 34) {
+        setPaymentError('Please enter a valid IBAN');
+        return false;
+      }
     }
     
     return true;
@@ -1486,55 +1565,105 @@ const Checkout: React.FC = () => {
 
             <FormSection>
               <SectionTitle>Payment Information</SectionTitle>
-              <FormGroup>
-                <Label htmlFor="cardNumber">Card Number *</Label>
-                <Input
-                  type="text"
-                  id="cardNumber"
-                  name="cardNumber"
-                  value={formData.cardNumber}
-                  onChange={handleInputChange}
-                  placeholder="1234 5678 9012 3456"
-                  required
-                />
-              </FormGroup>
-              <FormRow>
-                <FormGroup>
-                  <Label htmlFor="expiryDate">Expiry Date *</Label>
-                  <Input
-                    type="text"
-                    id="expiryDate"
-                    name="expiryDate"
-                    value={formData.expiryDate}
-                    onChange={handleInputChange}
-                    placeholder="MM/YY"
-                    required
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="cvv">CVV *</Label>
-                  <Input
-                    type="text"
-                    id="cvv"
-                    name="cvv"
-                    value={formData.cvv}
-                    onChange={handleInputChange}
-                    placeholder="123"
-                    required
-                  />
-                </FormGroup>
-              </FormRow>
-              <FormGroup>
-                <Label htmlFor="nameOnCard">Name on Card *</Label>
-                <Input
-                  type="text"
-                  id="nameOnCard"
-                  name="nameOnCard"
-                  value={formData.nameOnCard}
-                  onChange={handleInputChange}
-                  required
-                />
-              </FormGroup>
+              
+              <PaymentMethodSelector>
+                <PaymentMethodOption
+                  type="button"
+                  $selected={paymentMethod === 'card'}
+                  onClick={() => setPaymentMethod('card')}
+                >
+                  <PaymentMethodLogo src="/images/credit-card-icon.png" alt="Credit Card" />
+                  Credit/Debit Card
+                </PaymentMethodOption>
+                <PaymentMethodOption
+                  type="button"
+                  $selected={paymentMethod === 'sepa'}
+                  onClick={() => setPaymentMethod('sepa')}
+                >
+                  <PaymentMethodLogo src="/images/sepa-logo.png" alt="SEPA" />
+                  SEPA Direct Debit
+                </PaymentMethodOption>
+              </PaymentMethodSelector>
+
+              {paymentMethod === 'card' ? (
+                <>
+                  <FormGroup>
+                    <Label htmlFor="cardNumber">Card Number *</Label>
+                    <Input
+                      type="text"
+                      id="cardNumber"
+                      name="cardNumber"
+                      value={formData.cardNumber}
+                      onChange={handleInputChange}
+                      placeholder="1234 5678 9012 3456"
+                      required
+                    />
+                  </FormGroup>
+                  <FormRow>
+                    <FormGroup>
+                      <Label htmlFor="expiryDate">Expiry Date *</Label>
+                      <Input
+                        type="text"
+                        id="expiryDate"
+                        name="expiryDate"
+                        value={formData.expiryDate}
+                        onChange={handleInputChange}
+                        placeholder="MM/YY"
+                        required
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <Label htmlFor="cvv">CVV *</Label>
+                      <Input
+                        type="text"
+                        id="cvv"
+                        name="cvv"
+                        value={formData.cvv}
+                        onChange={handleInputChange}
+                        placeholder="123"
+                        required
+                      />
+                    </FormGroup>
+                  </FormRow>
+                  <FormGroup>
+                    <Label htmlFor="nameOnCard">Name on Card *</Label>
+                    <Input
+                      type="text"
+                      id="nameOnCard"
+                      name="nameOnCard"
+                      value={formData.nameOnCard}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </FormGroup>
+                </>
+              ) : (
+                <>
+                  <FormGroup>
+                    <Label htmlFor="iban">IBAN *</Label>
+                    <Input
+                      type="text"
+                      id="iban"
+                      name="iban"
+                      value={formData.iban}
+                      onChange={handleInputChange}
+                      placeholder="DE89 3704 0044 0532 0130 00"
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label htmlFor="accountHolderName">Account Holder Name *</Label>
+                    <Input
+                      type="text"
+                      id="accountHolderName"
+                      name="accountHolderName"
+                      value={formData.accountHolderName}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </FormGroup>
+                </>
+              )}
             </FormSection>
 
             {hasPendingMembership && (
@@ -1577,7 +1706,7 @@ const Checkout: React.FC = () => {
                   💳 Payment Options
                 </NoticeTitle>
                 <NoticeText>
-                  Only credit/debit card payments are accepted. No multiple payment options available.
+                  We accept credit/debit cards and SEPA Direct Debit. Select your preferred payment method above.
                 </NoticeText>
               </NoticeSection>
             </CheckoutNotices>
